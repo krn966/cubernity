@@ -1,0 +1,4 @@
+# Production domain: cubernity.com
+User-agent: *
+Allow: /
+Sitemap: https://cubernity.com/sitemap.xml

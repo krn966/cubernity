@@ -1,0 +1,27 @@
+{
+  "name": "Cubernity",
+  "short_name": "Cubernity",
+  "description": "The connected workspace for modern NVOCCs.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "background_color": "#0B1F3A",
+  "theme_color": "#0B1F3A",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
