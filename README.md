@@ -6,7 +6,7 @@ A fully static, responsive coming-soon website. No framework, installation, buil
 
 - **Launch:** set the single `LAUNCH_DATE` constant at the top of `index.html` to an ISO date with timezone. Blank displays “Launch date to be announced”; future dates display a live countdown; past dates display “We’re live.” Confirm the actual launch before setting a date.
 - **Contact:** populate `CONFIG.email`, `phone`, `whatsapp` (international digits only), `discoveryUrl`, `linkedin`, and `x`. Empty destinations remain unlinked and visibly pending.
-- **Waitlist:** set `CONFIG.formEndpoint` to an HTTPS endpoint accepting JSON and returning a successful status only after storing the signup. Formspree, a Google Sheets bridge with CORS support, or an owned API can implement this contract. No endpoint means no submission, no personal-data storage and no false success message. The page stays static even with an external form service.
+- **Waitlist:** `CONFIG.formEndpoint` is configured as `https://formspree.io/f/mvkzgzll`, separately from the partner form `https://formspree.io/f/mljgdgzn`. Formspree, a Google Sheets bridge with CORS support, or an owned API can implement this contract. No endpoint means no submission, no personal-data storage and no false success message. The page stays static even with an external form service.
 - **Backend duties:** validate and sanitize inputs; enforce rate limits and spam controls server-side; honor consent; restrict access; implement retention and deletion; return errors truthfully. The browser honeypot and 60-second courtesy rate limit are not security boundaries. Failed requests can be retried after one minute.
 - **Colors:** edit the `:root` variables and dark-theme overrides in the inline CSS. Core palette: navy `#0B1F3A`, blue `#1E6FFF`, teal `#00C2A8`. Darker teal `#007967` supports legible small text on light surfaces.
 - **Logo:** edit the inline `mark` symbol and corresponding SVGs in `assets/`. The standalone wordmarks use editable text; outlined typography is recommended for final brand production.
@@ -38,3 +38,25 @@ Browser checks cover 320, 375, 390, 768 and 1440 pixel layouts, theme switching,
 1. Connect a production waitlist with double opt-in, abuse prevention and a verified privacy/retention process.
 2. Replace the illustrative dashboard with a validated product walkthrough and a real pilot onboarding flow.
 3. Add professionally reviewed Hindi translations and region-specific integration/availability information.
+
+## NVOCC partner registration page
+
+`partner-register.html` contains exactly the eleven business fields in the supplied screenshots, with the website and remarks optional. Navigation, the founding-partner CTA and footer link to it. Country tags support Enter/comma, removal and deduplication.
+
+**Hosting confirmed: GitHub Pages.** A GitHub Pages site cannot run the original `/api/partners` server route. The form is now prepared for Formspree so the website can remain fully static. The owner-supplied endpoint `https://formspree.io/f/mljgdgzn` is now configured. Submitted records are held by Formspree, not persisted in the repository or browser storage.
+
+### Connect submissions
+
+1. Create a form in your own [Formspree account](https://formspree.io/).
+2. Copy the endpoint from that form’s Integration section. It has the shape `https://formspree.io/f/…`.
+3. Set `PARTNER_FORM_ENDPOINT` at the top of `assets/partner-storage.js`. This endpoint is public; never add a secret API key or password.
+4. Configure your Formspree account’s access, spam protection, allowed domain and retention settings. Update the privacy notice with the actual provider and handling details.
+5. Publish the files through your existing GitHub Pages workflow, then make a test submission and confirm all eleven fields in the private Formspree dashboard.
+
+All eleven fields are submitted as JSON, including the countries array, numeric box count, optional website and multiline remarks. The page resets only after the service returns a successful JSON response. Failed or unconfirmed requests retain the input. A timeout does not prove the record was rejected; the service dashboard should be checked before repeating an uncertain submission. An embedded owner database is not implemented: owners use their authenticated Formspree dashboard. The public owner-sign-in link has been removed. Owners can sign in directly at Formspree to review submissions.
+
+References: [GitHub Pages is static hosting](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages), [Formspree setup](https://help.formspree.io/articles/building-your-form/building-an-html-form), [JavaScript submissions](https://formspree.io/blog/formspree-ajax/).
+
+Current verification: required-field handling, all eleven payload fields, multiline values, country tags, failed-save input retention and mocked-success reset, plus 320/390/768/1440px layouts. Response tests use mocks; they do not prove delivery to the live Formspree inbox. No synthetic record has been sent to the live endpoint. Publish these changes with the existing GitHub Pages workflow to enable the production form.
+
+Homepage waitlist integration: configured to the owner-supplied Formspree endpoint. The page confirms a successful JSON response before clearing the form. Failure retains input. Live inbox delivery has not been verified with a real submission; tests intercept requests. Publish the repository changes through GitHub Pages for production use.
